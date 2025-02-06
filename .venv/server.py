@@ -28,29 +28,30 @@ def webhook_verification():
 def webhook():
     print('Post Request was made')
     data = request.json
-    print("Received data: %s", data)  # Log the incoming data
+    print("Received data:", data)  # Log the incoming data
 
-    # Navigate through the nested structure to access 'messages'
     if 'entry' in data and len(data['entry']) > 0:
         changes = data['entry'][0]['changes']
         if len(changes) > 0:
             messages = changes[0]['value'].get('messages', [])
             if messages:
-                sender = messages[0]['from']  # Extract the sender's number
-                message_text = messages[0]['text']['body']  # Extract the message text
-                # Check if the message is "hi"
-                if message_text.lower() == "hi":
-                    response_message = f"Hello {sender}, Welcome to 2boxMediahouse shop manager. Would you like to setup shop or login?"
-                    welcome_Menu(sender)  # Call the function to send a text message
+                sender = messages[0].get('from')  # Extract the sender's number
+                if 'text' in messages[0]:  # Check if 'text' key exists
+                    message_text = messages[0]['text']['body']  # Extract the message text
+                    if message_text.lower() == "hi":
+                        response_message = f"Hello {sender}, Welcome to 2boxMediahouse shop manager. Would you like to setup shop or login?"
+                        welcome_Menu(sender)  # Call the function to send a text message
+                else:
+                    print("No 'text' key found in the message.")
             else:
                 print("No 'messages' key found in the incoming data.")
         else:
             print("No 'changes' found in the entry.")
     else:
         print("No 'entry' key found in the incoming data.")
+    
+    return jsonify({"status": "success"}), 200  # Acknowledge receipt of the message        
 
-    return jsonify({"status": "success"}), 200  # Acknowledge receipt of the message
 
-        
 if __name__ == "__main__":
     app.run(debug=True)
