@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify
 import requests
 import os
+# from openai import OpenAI
+from common.Welcome_Menu  import welcome_Menu
+
 
 app = Flask(__name__)
 VERIFY_TOKEN = os.getenv('VERIFY_TOKEN')  # Set this in your environment
@@ -38,7 +41,7 @@ def webhook():
                 # Check if the message is "hi"
                 if message_text.lower() == "hi":
                     response_message = f"Hello {sender}, Welcome to 2boxMediahouse shop manager. Would you like to setup shop or login?"
-                    send_whatsapp_interactive_message(sender)  # Call the function to send a text message
+                    welcome_Menu(sender)  # Call the function to send a text message
             else:
                 print("No 'messages' key found in the incoming data.")
         else:
@@ -48,55 +51,6 @@ def webhook():
 
     return jsonify({"status": "success"}), 200  # Acknowledge receipt of the message
 
-def send_whatsapp_interactive_message(recipient_id):
-    """Send an interactive message to the user."""
-    url = f"https://graph.facebook.com/v22.0/574126562443300/messages"  # Use the correct endpoint
-    headers = {'Content-Type': 'application/json',
-               'Authorization':'Bearer EAAZAyg37sE4ABO2BDzeF1F18yibpv7ZCFSCvmjp3ksiZCLweiZBQv9vOSNTkgGCij1009DrLXf3Slx9fq1uyYd0lZBn91bTIwG4Dl3UK4ovnZCLm50yE8k9puGpFw6twZANgc1x3jEEDjyjiSxlnsdGkBXHEPH5VZCZCwqfZB21jYAA7q07MnBgP2BUtypHr15XVexvwZDZD'}
-    data = {
-        "messaging_product": "whatsapp",
-        "recipient_type": "individual",
-        "to": recipient_id,
-        "type": "interactive",
-        "interactive": {
-            "type": "list",
-            "header": {
-                "type": "text",
-                "text": "Welcome to Shop manager ."
-            },
-            "body": {
-                "text": "What would you like to do?"
-            },
-            "footer": {
-                "text": "Powered by 2boxmediahouse"
-            },
-            "action": {
-                "button": "Menu Options",
-                "sections": [
-                    {
-                        "title": "Create Shop",
-                        "rows": [
-                            {
-                                "id": "create_shop",
-                                "title": "Get Started",
-                                "description": "Provide Shop name and a few necessary details."
-                            },
-                            {
-                                "id": "get_into_myshop",
-                                "title": "My Shop",
-                                "description": "login to start managing you shop"
-                            }
-                        ]
-                    },
-                   
-                ]
-            }
-        }
-    }
-    
-    response = requests.post(url, json=data, headers=headers)
-    if response.status_code != 200:
-        print("Failed to send message:", response.json())
         
 if __name__ == "__main__":
     app.run(debug=True)
