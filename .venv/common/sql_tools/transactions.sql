@@ -1,0 +1,1 @@
+CREATE TABLE `boxmedia_botbrain`.`transactions` (`userid` INT NOT NULL , `id` INT NOT NULL AUTO_INCREMENT , `date` TIMESTAMP NOT NULL , `category` TEXT NOT NULL , `description` TEXT NOT NULL , `amount` FLOAT NOT NULL , PRIMARY KEY (`id`)) ENGINE = MyISAM;

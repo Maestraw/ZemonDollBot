@@ -32,12 +32,12 @@ def welcome_Menu(recipient_id):
                             {
                                 "id": "create_shop",
                                 "title": "Get Started",
-                                "description": "Provide Shop name and a few necessary details."
+                                # "description": "Provide Shop name and a few necessary details."
                             },
                             {
                                 "id": "get_into_myshop",
                                 "title": "My Shop",
-                                "description": "login to start managing you shop"
+                                # "description": "login to start managing you shop"
                             }
                         ]
                     },

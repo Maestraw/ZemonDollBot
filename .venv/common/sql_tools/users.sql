@@ -1,0 +1,1 @@
+CREATE TABLE `boxmedia_botbrain`.`users` (`id` INT NOT NULL AUTO_INCREMENT , `phone_number` VARCHAR(15) NULL DEFAULT NULL , `shopname` VARCHAR(255) NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = MyISAM;
